@@ -1,6 +1,6 @@
-//aqui llamo a unas etiquetas html para darle algunos eventos
-
-//EVENTOS
+/*aqui llamo a unas etiquetas html para darle algunos eventos
+mediante el metodo add eventlistener
+*/
 
 var titulo = document.getElementById('titulo');
 titulo.addEventListener('mouseover',function(){
@@ -19,6 +19,7 @@ formu.addEventListener('mouseout',function(){
     formu.style.backgroundColor="white";
 });
 
+
 var rights = document.getElementById('rights');
 rights.addEventListener('mouseover',function(){
     rights.style.backgroundColor="#ecf0f1";
@@ -27,13 +28,6 @@ rights.addEventListener('mouseout',function(){
     rights.style.backgroundColor="white";
 });
 
-var contenedor = document.querySelector('#contenedor');
-contenedor.addEventListener('mouseover',function(){
-    contenedor.style.backgroundColor="#bdc3c7";
-});
-contenedor.addEventListener('mouseout',function(){
-    contenedor.style.backgroundColor="white";
-});
 
 var derechos = document.querySelector('#rights');
 derechos.addEventListener('mouseover',function(){
@@ -42,6 +36,11 @@ derechos.addEventListener('mouseover',function(){
 derechos.addEventListener('mouseout',function(){
     derechos.style.backgroundColor="white";
 });
+
+/*a continuacion creo una clase que contendra 
+un constructor para asociar los valores que el
+usuario introduzca con sus respectivos campos
+*/
 
 class Password{
     constructor(password,dblcheck,name){
@@ -52,62 +51,76 @@ class Password{
     
 }
 
+/*a continuacion creo una clase que contendra todos
+los metodos a los que llamare mas adelante
+*/
 
 class UI{
-    showMessage(message,cssClass){
-        const h2 = document.createElement('h2');
-        h2.className = 'alarma alert-'+ cssClass;
-        h2.appendChild(document.createTextNode(message));
+    showMessage(message,cssClass){                           //creo algunas etiquetas ,les doy contenido
+        const h4 = document.createElement('h4');             //y las situo usando appendchild mas 
+        h4.className = 'alarma alert-'+ cssClass;            //llamaremos al evento submit y cuando este
+        h4.appendChild(document.createTextNode(message));    //se produzca estos metodos entraran en accion
         const alarma = document.querySelector('#alarma');
-        alarma.appendChild(h2);
+        alarma.appendChild(h4);
         
 
         setTimeout(function() {
-            document.querySelector('h2').remove();
-        }, 5000);
-
-      
-        
-    }
-    resetMessage(){
-
+            document.querySelector('h4').remove();           //para tl metodo showMessage y show 
+        }, 3000);
 
     }
 
+    showAlarm(message,cssClass){
+        const h6 = document.createElement('h6');
+        h6.className = 'alarm alert-'+ cssClass;
+        h6.appendChild(document.createTextNode(message));
+        const alar = document.getElementById('alar');
+        alar.appendChild(h6);
+
+        setTimeout(function(){
+               document.querySelector('h6').remove();
+        },3000);
+    }
+    
     resetFormulario(){
         document.getElementById('formulario').reset();
     }
-
-   
-
-    
 }
 
- const formulario = document.getElementById('formulario')
+
+
+const formulario = document.getElementById('formulario')
 .addEventListener('submit',function(e){
         const password = document.getElementById('password').value;
         const dblcheck = document.getElementById('dblcheck').value;
         const name = document.getElementById('name').value;
+
         const newPassword = new Password(password,dblcheck,name);
 
         var userinter = new UI
-        var compare = [1,2,3,4,5,6,7,8];
-        if(password<compare.length){
-            alert('Password ha de tener minimo 8 carateres');
-        }
+
+       
+        
+        
+        
 
         if(password === '' || dblcheck === '' || name === ''){
-               return userinter.showMessage('introduzca todos los campos','info');
+             userinter.showMessage('Introduzca todos los campos','info');
+            
         }
         
+        if(password.length<8){
+               userinter.showAlarm('La contraseña ha de tener un minimo de 8 caracteres','info');
+        }else if(password === dblcheck){
+             userinter.showMessage('Las contraseñas coinciden','success');
+            }else{
+                 userinter.showMessage('Las contraseñas no coinciden','danger');
+                }
         
-        if(password === dblcheck){
-             userinter.showMessage('Contraseña Correcta','success');
-        }else{
-             userinter.showMessage('Contraseña Incorrecta','danger');
-        }
-        userinter.resetFormulario();
-        e.preventDefault();
+
+        
+      userinter.resetFormulario();
+    e.preventDefault();
 });
 
 

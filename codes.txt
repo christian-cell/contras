@@ -42,3 +42,5 @@ var formu2 = document.getElementById('formulario')
         if(password<compare.length){
             alert('Password ha de tener minimo 8 carateres');
         }
+
+       
